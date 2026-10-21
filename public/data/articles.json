@@ -1,0 +1,16 @@
+{
+  "articles": [
+    {
+      "title": "第一次用网盘？先看这篇",
+      "url": "./help/netdisk-first.html"
+    },
+    {
+      "title": "怎么避免下载到假资源",
+      "url": "./help/fake-resources.html"
+    },
+    {
+      "title": "常见问题：链接失效怎么办",
+      "url": "./help/link-expired.html"
+    }
+  ]
+}

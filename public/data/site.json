@@ -1,0 +1,22 @@
+{
+  "title": "网盘导航",
+  "subtitle": "找资源，从这里进网盘",
+  "themeColor": "#2b6cff",
+  "hero": "./img/hero.jpg",
+  "showTitle": true,
+  "news": [
+    { "text": "建议点右上角「添加到主屏幕」，下次一点就开" },
+    { "text": "本站只做网盘入口导航，不存储、不提供任何资源" }
+  ],
+  "invite": {
+    "enabled": true,
+    "img": "./img/workbuddy.svg",
+    "title": "用 WorkBuddy，把重复的活儿交给 AI",
+    "desc": "免费下载 · 桌面端 AI 助手",
+    "cta": "免费下载",
+    "url": "https://www.workbuddy.cn/events/invite?inviteCode=c6eq200qu2"
+  },
+  "articlesTitle": "技术支持",
+  "contact": "邮箱：xiaohe@aimcp.sbs　|　QQ 群：1020856065",
+  "copyright": "© 2026 网盘导航 · 本站仅提供网盘入口导航，不存储任何资源"
+}

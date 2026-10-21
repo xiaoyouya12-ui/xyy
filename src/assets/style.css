@@ -1,0 +1,249 @@
+:root {
+  --brand: #2b6cff;
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --text: #1a1d24;
+  --muted: #6b7280;
+  --line: #e8eaee;
+  --radius: 14px;
+  --shadow: 0 1px 3px rgba(16, 24, 40, 0.06), 0 6px 18px rgba(16, 24, 40, 0.05);
+  --maxw: 720px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+#app {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-bottom: 28px;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+h1, h2, h3, h4 { margin: 0; font-weight: 600; }
+
+/* ---------- 顶部大图 ---------- */
+.hero { position: relative; overflow: hidden; margin-bottom: 14px; }
+.hero img {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  object-fit: cover;
+  display: block;
+  background: #dbe4ff;
+}
+.hero-fallback {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  background: linear-gradient(135deg, #2b6cff, #5a52ff 55%, #00a8ff);
+}
+/* 标题放图片下方（图与文字分开，互不干扰） */
+.hero-caption {
+  padding: 10px 18px 0;
+  color: #12306b;
+}
+.hero-caption h1 {
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  color: #12306b;
+}
+.hero-caption p {
+  margin: 3px 0 0;
+  font-size: 13px;
+  color: rgba(18, 48, 107, 0.72);
+}
+
+/* ---------- 跑马灯 ---------- */
+.marquee {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 16px 14px;
+  padding: 10px 14px;
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+.marquee-tag {
+  flex: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #2b6cff, #5a52ff);
+  padding: 2px 9px;
+  border-radius: 6px;
+}
+.marquee-view { flex: 1; overflow: hidden; position: relative; height: 22px; }
+.marquee-track {
+  display: flex;
+  width: max-content;
+  font-size: 13px;
+  line-height: 22px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.marquee-track.scroll { animation: marquee 26s linear infinite; }
+.marquee-track.scroll > span { padding-right: 60px; }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track.scroll { animation: none; }
+}
+
+/* ---------- 网盘卡片 ---------- */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 0 16px;
+  margin-bottom: 8px;
+}
+@media (min-width: 560px) {
+  .cards { grid-template-columns: repeat(3, 1fr); }
+  .card { flex-direction: column; text-align: center; }
+  .card-arrow { display: none; }
+  .card-icon { margin: 0 auto; }
+}
+.card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: var(--card);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); border-color: var(--brand); }
+.card:active { transform: scale(0.985); }
+.card-icon {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+  font-weight: 600;
+  overflow: hidden;
+}
+.card-icon img { width: 100%; height: 100%; object-fit: contain; }
+.card-body { flex: 1; min-width: 0; }
+.card-body h3 { font-size: 15.5px; }
+.card-body p { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); }
+.card-arrow { flex: none; color: #b9bfc9; font-size: 17px; }
+
+.load-error {
+  margin: 12px 16px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  color: #a32d2d;
+  background: #fcebeb;
+  border-radius: 10px;
+}
+
+/* ---------- 底部 ---------- */
+.site-footer { padding: 0 16px; margin-top: 20px; }
+.divider { height: 1px; background: var(--line); margin-bottom: 18px; }
+.foot-sec { margin-bottom: 18px; }
+.foot-sec h4 {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.art-list { list-style: none; margin: 0; padding: 0; }
+.art-list li + li { margin-top: 6px; }
+.art-list a {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--text);
+  padding: 7px 10px;
+  background: var(--card);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  transition: color 0.15s ease;
+}
+.art-list a:hover { color: var(--brand); }
+.art-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.art-date { flex: none; font-size: 11.5px; color: #aab0ba; }
+.contact { margin: 0; font-size: 13.5px; color: var(--muted); word-break: break-all; }
+.copyright {
+  margin: 22px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 11.5px;
+  color: #9aa1ab;
+  text-align: center;
+  line-height: 1.7;
+}
+
+/* ---------- 推广位（WorkBuddy 邀请） ---------- */
+.invite {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #eef4ff 0%, #eafaf6 100%);
+  border: 1px solid #dbe6ff;
+  box-shadow: var(--shadow);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.invite:hover { transform: translateY(-2px); border-color: var(--brand); }
+.invite:active { transform: scale(0.99); }
+.invite-logo {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+}
+.invite-body { flex: 1; min-width: 0; }
+.invite-title {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.invite-desc {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.invite-cta {
+  flex: none;
+  padding: 7px 12px;
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  background: linear-gradient(135deg, #2b6cff 0%, #16bda0 100%);
+}
+@media (max-width: 400px) {
+  .invite-title { font-size: 13.5px; }
+  .invite-cta { padding: 6px 10px; font-size: 12px; }
+}

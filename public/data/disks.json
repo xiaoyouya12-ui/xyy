@@ -1,0 +1,32 @@
+{
+  "updated": "2026-09-29",
+  "disks": [
+    {
+      "id": "baidu",
+      "name": "百度网盘",
+      "title": "资源最全 · 老牌稳定",
+      "url": "https://pan.baidu.com/s/1Woj16yjR3-N_OHTBMVtn9Q?pwd=28P5",
+      "color": "#2932e1",
+      "icon": "",
+      "enabled": true
+    },
+    {
+      "id": "quark",
+      "name": "夸克网盘",
+      "title": "不限速 · 手机端好用",
+      "url": "https://pan.quark.cn/s/e7f50a4ca501",
+      "color": "#5a52ff",
+      "icon": "",
+      "enabled": true
+    },
+    {
+      "id": "xunlei",
+      "name": "迅雷云盘",
+      "title": "离线下载强 · 大文件快",
+      "url": "https://pan.xunlei.com/s/VP2g9ySEg2VXw04k0qxDiy7zA1?pwd=2jdv",
+      "color": "#00a8ff",
+      "icon": "",
+      "enabled": true
+    }
+  ]
+}
