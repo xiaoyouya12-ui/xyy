@@ -10,28 +10,31 @@ on:
 
 permissions:
   contents: read
-  administration: write
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Update description / homepage / topics
+      - name: Diagnose token
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
-          DESCRIPTION: "聚合百度 / 夸克 / 迅雷网盘入口的静态导航站，Vue 3 + Vite + PWA，可添加到手机主屏"
-          HOMEPAGE: "https://xiaoyouya12-ui.github.io/xyy/"
-          TOPICS: "vue,vite,pwa,netdisk,pan-nav,navigation,static-site,github-pages"
         run: |
-          set -euo pipefail
-          echo "== 1. description / homepage =="
+          echo "== token 可用性 =="
+          gh auth status 2>&1 | head -10 || true
+          echo
+          echo "== 读取仓库信息(测试 token 基本可用性) =="
+          gh api "repos/${REPO}" --jq '{full_name, description, homepage, topics, private}' 2>&1 | head -20 || true
+          echo
+          echo "== 尝试更新 description / homepage =="
           gh api --method PATCH "repos/${REPO}" \
-            -f description="${DESCRIPTION}" \
-            -f homepage="${HOMEPAGE}" \
-            --jq '{description, homepage}'
-          echo "== 2. topics =="
-          echo "${TOPICS}" | tr ',' '\n' | jq -R . | jq -s '{names: .}' > /tmp/topics.json
-          gh api --method PUT "repos/${REPO}/topics" --input /tmp/topics.json --jq '.names'
-          echo "== 3. 回读校验 =="
-          gh api "repos/${REPO}" --jq '{description, homepage, topics}'
+            -f description="聚合百度 / 夸克 / 迅雷网盘入口的静态导航站，Vue 3 + Vite + PWA，可添加到手机主屏" \
+            -f homepage="https://xiaoyouya12-ui.github.io/xyy/" \
+            --jq '{description, homepage}' 2>&1 | head -30 || true
+          echo
+          echo "== 尝试更新 topics =="
+          echo '{"names":["vue","vite","pwa","netdisk","pan-nav","navigation","static-site","github-pages"]}' > /tmp/topics.json
+          gh api --method PUT "repos/${REPO}/topics" --input /tmp/topics.json --jq '.names' 2>&1 | head -30 || true
+          echo
+          echo "== 最终回读 =="
+          gh api "repos/${REPO}" --jq '{description, homepage, topics}' 2>&1 | head -20 || true
