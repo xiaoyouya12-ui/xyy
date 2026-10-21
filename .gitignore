@@ -1,5 +1,22 @@
+# 依赖
 node_modules
+
+# 构建产物
 dist
+
+# 系统/编辑器
 .DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 本地环境变量（切勿上传）
+.env
+.env.local
+.env.*.local
+
+# 日志与临时文件
+*.log
+npm-debug.log*
 *.local
 .vite
