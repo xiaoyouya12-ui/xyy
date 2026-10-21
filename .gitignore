@@ -20,3 +20,10 @@ Thumbs.db
 npm-debug.log*
 *.local
 .vite
+
+# 本地截图/调试产物
+_shots/
+
+# 本地私有部署信息（含服务器 IP/路径，绝不上传）
+部署信息.local.md
+*.local.md
