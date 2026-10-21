@@ -1,0 +1,23 @@
+# 仓库元数据（description / homepage / topics）
+#
+# 这份配置是仓库「门面」的唯一真相来源。
+# 改完在 Actions 页面手动跑一次 "Sync Repo Metadata" 即可生效。
+# 脚本：.github/workflows/repo-meta.yml
+#
+# description 规则：≤100 字符、结尾不带句号、说清楚"这是个啥"而不是"用什么写的"
+description: 聚合百度 / 夸克 / 迅雷网盘入口的静态导航站，Vue 3 + Vite + PWA，可添加到手机主屏
+
+# homepage：仓库主页展示的链接
+homepage: https://xiaoyouya12-ui.github.io/xyy/
+
+# topics：GitHub 搜索标签，全小写、连字符分隔
+# 命名思路：生态(1) + 领域(1-2) + 用户会搜的词(2-3)
+topics:
+  - vue
+  - vite
+  - pwa
+  - netdisk
+  - pan-nav
+  - navigation
+  - static-site
+  - github-pages
