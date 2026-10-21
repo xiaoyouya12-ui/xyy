@@ -1,0 +1,37 @@
+name: Sync Repo Metadata
+
+# 只在手动触发或本文件变更时运行，避免每次 push 都白跑
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - '.github/workflows/repo-meta.yml'
+
+permissions:
+  contents: read
+  administration: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update description / homepage / topics
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          DESCRIPTION: "聚合百度 / 夸克 / 迅雷网盘入口的静态导航站，Vue 3 + Vite + PWA，可添加到手机主屏"
+          HOMEPAGE: "https://xiaoyouya12-ui.github.io/xyy/"
+          TOPICS: "vue,vite,pwa,netdisk,pan-nav,navigation,static-site,github-pages"
+        run: |
+          set -euo pipefail
+          echo "== 1. description / homepage =="
+          gh api --method PATCH "repos/${REPO}" \
+            -f description="${DESCRIPTION}" \
+            -f homepage="${HOMEPAGE}" \
+            --jq '{description, homepage}'
+          echo "== 2. topics =="
+          echo "${TOPICS}" | tr ',' '\n' | jq -R . | jq -s '{names: .}' > /tmp/topics.json
+          gh api --method PUT "repos/${REPO}/topics" --input /tmp/topics.json --jq '.names'
+          echo "== 3. 回读校验 =="
+          gh api "repos/${REPO}" --jq '{description, homepage, topics}'
