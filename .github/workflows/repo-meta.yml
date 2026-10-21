@@ -9,59 +9,45 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Update repo metadata
+      - name: Update repo metadata and report via issue
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
         run: |
           set +e
-          echo "== token 状态 =="
-          gh auth status 2>&1 | head -8
-          echo
-          echo "== 读当前元数据 =="
-          gh api "repos/${REPO}" --jq '{description, homepage, topics}' 2>&1 | head -10
-          echo
-          echo "== PATCH description/homepage =="
-          gh api --method PATCH "repos/${REPO}" \
-            -f description="聚合百度 / 夸克 / 迅雷网盘入口的静态导航站，Vue 3 + Vite + PWA，可添加到手机主屏" \
-            -f homepage="https://xiaoyouya12-ui.github.io/xyy/" \
-            --jq '{description, homepage}' 2>&1 | head -20
-          echo
-          echo "== PUT topics =="
-          echo '{"names":["vue","vite","pwa","netdisk","pan-nav","navigation","static-site","github-pages"]}' > /tmp/topics.json
-          gh api --method PUT "repos/${REPO}/topics" --input /tmp/topics.json --jq '.names' 2>&1 | head -20
-          echo
-          echo "== 最终回读 =="
-          gh api "repos/${REPO}" --jq '{description, homepage, topics}' 2>&1 | head -10
-          echo
-          echo "== 写诊断文件并提交到 main =="
-          mkdir -p .github/diag
+          LOG=/tmp/meta-diag.txt
           {
-            echo "# 元数据同步诊断日志"
+            echo "### gh auth status"
+            gh auth status 2>&1 | head -10
+            echo
+            echo "### PATCH description/homepage"
+            gh api --method PATCH "repos/${REPO}" \
+              -f description="聚合百度 / 夸克 / 迅雷网盘入口的静态导航站，Vue 3 + Vite + PWA，可添加到手机主屏" \
+              -f homepage="https://xiaoyouya12-ui.github.io/xyy/" \
+              --jq '{description, homepage}' 2>&1 | head -25
+            echo
+            echo "### PUT topics"
+            echo '{"names":["vue","vite","pwa","netdisk","pan-nav","navigation","static-site","github-pages"]}' > /tmp/topics.json
+            gh api --method PUT "repos/${REPO}/topics" --input /tmp/topics.json --jq '.names' 2>&1 | head -25
+            echo
+            echo "### 最终回读"
+            gh api "repos/${REPO}" --jq '{description, homepage, topics}' 2>&1 | head -10
+          } > "$LOG" 2>&1
+          cat "$LOG"
+          echo
+          echo "### 发 issue 上报 =="
+          {
+            echo "自动诊断报告 — $(date -u +%FT%TZ)"
             echo
             echo '```'
-            echo "token: $(gh auth token 2>/dev/null | head -c 8)...(已截断)"
-            echo "repo: ${REPO}"
-            echo "时间: $(date -u +%FT%TZ)"
+            cat "$LOG"
             echo '```'
-            echo
-            echo "## 最终元数据"
-            echo '```json'
-            gh api "repos/${REPO}" --jq '{description, homepage, topics}' 2>&1
-            echo '```'
-          } > .github/diag/meta-log.md
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .github/diag/meta-log.md
-          if git diff --cached --quiet; then
-            echo "无变化，跳过提交"
-          else
-            git commit -m "chore(diag): 元数据同步诊断日志" 2>&1 | tail -2
-          fi
-          git push origin HEAD:refs/heads/main 2>&1 | tail -5
-          echo "push exit=$?"
+          } > /tmp/body.md
+          gh issue create --repo "$REPO" --title "meta-sync diagnostic" --body-file /tmp/body.md 2>&1 | head -5
+          echo "issue create exit=$?"
